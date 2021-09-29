@@ -2,7 +2,8 @@ import React, {
     createContext,
     ReactNode,
     useContext,
-    useState
+    useState,
+    useEffect
 } from 'react';
 
 import * as AuthSession from 'expo-auth-session';
@@ -34,12 +35,15 @@ interface IAuthContextData {
     user: User;
     signInWithGoogle(): Promise<void>;
     signInWithApple(): Promise<void>;
+    signOut(): Promise<void>;
+    userSorageloading: Boolean;
 }
 
 const AuthContext = createContext({} as IAuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps){
    const [user, setUser] = useState<User>({} as User);
+   const [userSorageloading, setUserStorageLoading] = useState(true)
 
    async function signInWithApple() {
        try {
@@ -97,8 +101,27 @@ function AuthProvider({ children }: AuthProviderProps){
         }
     }
 
+    async function signOut() {
+        setUser({} as User);
+
+        await AsyncStorage.removeItem('@gofinances:user');
+    }
+
+    useEffect(() => {
+        async function loadUserStorageData() {
+            const userStoraged = await AsyncStorage.getItem('@gofinances:user');
+
+            if(userStoraged) {
+                const userLogged = JSON.parse(userStoraged) as User;
+                setUser(userLogged);
+            }
+            setUserStorageLoading(false)
+        }   
+        loadUserStorageData();
+    }, [])
+
     return(
-        <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
+        <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple, signOut, userSorageloading }}>
             {children}
         </AuthContext.Provider>
     )

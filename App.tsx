@@ -4,15 +4,12 @@ import 'intl/locale-data/jsonp/pt-BR';
 
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { Routes } from './src/routes';
 import { ThemeProvider } from 'styled-components';
 
 import theme from './src/global/styles/theme';
-import { AppRoutes } from './src/routes/app.routes';
 
-import { AuthProvider } from './src/hooks/auth';
-
-import { SignIn } from './src/screens/SignIn';
+import { AuthProvider, useAuth } from './src/hooks/auth';
 
 import { 
   useFonts,
@@ -30,18 +27,18 @@ export default function App() {
     Poppins_700Bold,
   });
 
-  if(!fontsLoaded) {
+  const { userSorageloading } = useAuth();
+
+  if(!fontsLoaded || userSorageloading) {
     return <AppLoading />
   }
 
   return (
   <ThemeProvider theme={theme} >
-    <NavigationContainer>
       <StatusBar barStyle="light-content" />
       <AuthProvider>
-       <SignIn />
+       <Routes />
       </AuthProvider>
-    </NavigationContainer>
   </ThemeProvider>  
   );
 }
