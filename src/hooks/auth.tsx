@@ -55,11 +55,13 @@ function AuthProvider({ children }: AuthProviderProps){
         });
 
         if(credentials) {
+            const name = credentials.fullName!.givenName!;
+            const photo = `https://ui-avatars.com/api/?name=${name}&length=1`
             const userLogged = {
                 id: String(credentials.user),
-                name: credentials.fullName!.givenName!,
                 email: credentials.email!,
-                photo: undefined 
+                name,
+                photo,
             }
             console.log(credentials)
             setUser(userLogged);
