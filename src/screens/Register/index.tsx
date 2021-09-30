@@ -27,6 +27,7 @@ import { CategorySelectButton } from '../../components/Form/CategorySelectButton
 import { CategorySelect } from '../CategorySelect';
 import { InputForm } from '../../components/Form/InputForm';
 import { useNavigation } from '@react-navigation/core';
+import { useAuth } from '../../hooks/auth';
 
 interface FormData {
     name: string;
@@ -50,7 +51,9 @@ export function Register() {
     const [ transactionType, setTransactionType ] = useState('');
     const [categoryModal, setCategoryModal] = useState(false);
 
-    const dataKey = '@gofinances:transactions';
+    const { user } = useAuth();
+
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
 
     const { 
         control, 

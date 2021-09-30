@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -28,6 +28,7 @@ import {
 
 } from './styles';
 import { categories } from '../../utils/categories';
+import { useAuth } from '../../hooks/auth';
 
 interface TransactionProps {
     type: 'positive' | 'negative';
@@ -53,7 +54,9 @@ export function Resume() {
 
     const theme = useTheme();
 
-    const dataKey = '@gofinances:transactions';
+    const { user } = useAuth();
+
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
 
     function handleDateChange(action: 'next' | 'prev') {
         if (action === 'next') {
