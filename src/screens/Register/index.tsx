@@ -46,6 +46,7 @@ const schema = Yup.object().shape({
     .positive('O valor não pode ser negativo')
     .required('O valor é obrigatório')
 })
+// teste commit
 
 export function Register() {
     const [ transactionType, setTransactionType ] = useState('');

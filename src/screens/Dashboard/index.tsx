@@ -115,6 +115,7 @@ export function Dashboard() {
 
     const lastTransactionEntries = getLastTransactionDate(transactions, 'positive');
     const lastTransactionExpensives = getLastTransactionDate(transactions, 'negative');
+   
     const totalInterval = lastTransactionExpensives === 0 
     ? 'Não há transações'
     : `01 a ${lastTransactionExpensives}`
